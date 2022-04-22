@@ -4,62 +4,60 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static int clamp(int min, int max, int value){
+        return Math.max(min, Math.min(max, value));
+    }
+
     public static void main(String[] args) {
         System.out.println("Введите текст");
         Scanner in = new Scanner(System.in);
-        String a = in.nextLine();
-        List<String> qweqwe = new ArrayList<>();
-        String[] aa = a.trim().split("\\s+");
-        StringBuilder b = new StringBuilder();
-        int s = 0;
-        for (String i : aa) {
-            if ((s + i.length() <= 36)) {
-                b.append(i);
-                b.append(" ");
-                s = (s + i.length());
-                s++;
-            }
-            else {
-                qweqwe.add(b.toString());s = 0;
-                b = new StringBuilder();
+        String input = in.nextLine();
+        List<String> book = new ArrayList<>();
+        String[] words = input.trim().split("\\s+");
+        StringBuilder line = new StringBuilder();
+        int sumLine = 0;
+        for (String word : words) {
+            if ((sumLine + word.length() > 36)) {
+                book.add(line.toString());
+                sumLine = 0;
+                line = new StringBuilder();
 
-                b.append(i);
-                b.append(" ");
-                s = (s + i.length());
-                s++;
             }
+            line.append(word);
+            line.append(" ");
+            sumLine = (sumLine + word.length());
+            sumLine++;
 
         }
 
-        int temp = 0;
-        int r = 10;
-        int rm = qweqwe.size();
-        for (int i = temp; (i < Math.max(0, Math.min(rm, (temp + r)))); i++) {
-            System.out.println(qweqwe.get(i));
+        int now = 0;
+        int rows = 10;
+        int rowCount = book.size();
+        int border = clamp(0, rowCount, now + rows);
+        for (int row = now; row < border; ++row) {
+            System.out.println(book.get(row));
         }
 
-        temp = Math.max(0, Math.min(rm, (temp + r)));
+        now = border;
         while (true) {
 
             String abc = in.nextLine();
             System.out.println();
             switch (abc) {
-                case "d":
-                    System.out.flush();
-                    for (int i = temp; (i < Math.max(0, Math.min(rm, (temp + r)))); i++) {
-                        System.out.println(qweqwe.get(i));
+                case "d" -> {
+                    border = clamp(0, rowCount, now + rows);
+                    for (int row = now; row < border; ++row) {
+                        System.out.println(book.get(row));
                     }
-
-                    temp = Math.max(0, Math.min(rm, (temp + r)));
-                    break;
-                case "a":
-
-                    for (int i = Math.max(0, Math.min(rm, (temp - r))); (i < temp); i++) {
-                        System.out.println(qweqwe.get(i));
+                    now = border;
+                }
+                case "a" -> {
+                    border = clamp(0, rowCount, now - rows);
+                    for (int row = border; row < now; ++row) {
+                        System.out.println(book.get(row));
                     }
-
-                    temp = Math.max(0, Math.min(rm, (temp - r)));
-                    break;
+                    now = border;
+                }
             }
         }
 
