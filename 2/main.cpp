@@ -1,35 +1,40 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
- 
-int main (){
-  int k, a ,b;
-  string s;
-  cin >> k >> a >> b;
-  cin >> s;
-  int q = s.size();
-  int qb = (q + k -1) / k;
-  int qq = q % k ;
-  q /= k;
- 
-  if (qb  > b || q < a){ cout << "No solution";  return 0;}
-  if (q < a){ cout << "No solution";  return 0;}
-  if (qq != 0)
-  if (a == b)
-  {cout << "No solution";  return 0;}
-  for ( int i = 0 ; i < qq; i++){
-  string ss = "";
-  for ( int j = 0 ;  j < q+ 1 ; j++ ){
-  ss += s[j];
+
+int main() {
+  int lines, minn, maxx;
+  string inp;
+  cin >> lines >> minn >> maxx;
+  cin >> inp;
+  int inpLength = inp.size();
+  int lettersRoundUp = (inpLength + lines - 1) / lines;
+  int lettersRemain = inpLength % lines;
+  int lettersRoundDown = inpLength /= lines;
+
+  if (lettersRoundUp > maxx || lettersRoundDown < minn) {
+    cout << "No solution";
+    return 0;
   }
-  cout << ss << endl ;
-  s.erase(0,q+1);
+  if (lettersRemain != 0)
+    if (minn == maxx) {
+      cout << "No solution";
+      return 0;
+    }
+  for (int i = 0; i < lettersRemain; ++i) {
+    string ansLine = "";
+    for (int j = 0; j < lettersRoundDown + 1; ++j) {
+      ansLine += inp[j];
+    }
+    cout << ansLine << endl;
+    inp.erase(0, lettersRoundDown + 1);
   }
-  for ( int i = qq ; i < k; i++){
-  string ss = "";
-  for ( int j = 0 ;  j < q ; j++ ){
-  ss += s[j];
+  for (int i = lettersRemain; i < lines; ++i) {
+    string ansLine = "";
+    for (int j = 0; j < lettersRoundDown; ++j) {
+      ansLine += inp[j];
+    }
+    cout << ansLine << endl;
+    inp.erase(0, lettersRoundDown);
   }
-  cout << ss << endl ;
-  s.erase(0,q);
-  }
-return 0;}
+  return 0;
+}
